@@ -21,6 +21,10 @@ const renderer = new THREE.WebGLRenderer({
 })
 renderer.setSize(width, height)
 renderer.setClearColor(0xfef23a, 1)
+// NOTE add encoding to both input texture and render output for best texture lighting 
+// bakedTexture.encoding = THREE.sRGBEncoding
+// renderer.outputEncoding = THREE.sRGBEncoding
+
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 // ANCHOR Camera
@@ -30,10 +34,11 @@ const camera = new THREE.PerspectiveCamera(
     0.1,
     1000
 )
-// NOTE fov calculation in redme.md
-camera.position.set(0, 0, 5)
-const z = camera.position.z
-camera.fov = 2 * Math.atan((height / 2) / z) * (180 / Math.PI)
+// NOTE fov calculation in redme.md we dont need fov calc in every project
+camera.position.set(1, 3, 5)
+// const z = camera.position.z
+// camera.fov = 2 * Math.atan((height / 2) / z) * (180 / Math.PI)
+camera.lookAt(scene)
 scene.add(camera)
 
 // ANCHOR Controls
@@ -44,6 +49,18 @@ controls.enableDamping = true
 // NOTE Declareing global variables here
 const clock = new THREE.Clock()
 let time = 0
+
+
+// ANCHOR GEOMETRY
+const cube = new THREE.Mesh(
+    new THREE.BoxGeometry(1, 1, 1),
+    new THREE.MeshBasicMaterial({ color: 0xffab12 })
+)
+scene.add(cube)
+
+
+
+
 
 
 // TODO add objects through functions and call them here
