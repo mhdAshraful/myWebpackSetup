@@ -1,0 +1,19 @@
+// colors
+$primary-color: #ffffff;
+$secondary-color: #b87408;
+$dark-color: #000000;
+$background-opacity: 0.95;
+
+@mixin changeColor {
+  transition: all 0.5s ease-out;
+}
+@function set-text-color($color) {
+  // decide to change color mode
+  @if (lightness($color) >40) {
+    @return $dark-color;
+  } @else {
+    @return $primary-color;
+  }
+}
+
+// media query setup
