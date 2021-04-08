@@ -130,6 +130,51 @@ const z = camera.position.z
 2 * Math.atan((height / 2) / z) * (180 / Math.PI)
 ```
 
+# Scene Optimizations
+
+First of all we have to see what happens when we first visit a website that has 3D contents in it. We need to add ```Spector.js``` to in chrome of fire-fox browser to see to inspect what is going on behind the 3D render.
+
+- [ ] It fetches data from server and start rendering
+- [ ] when we click Spector icon we will se following picture ![image-20210407002049419](C:\Users\M A Islam\AppData\Roaming\Typora\typora-user-images\image-20210407002049419.png) 
+- [ ] clicking the red circle will capture every steps to render everything on the screen ![image-20210407002322697](C:\Users\M A Islam\AppData\Roaming\Typora\typora-user-images\image-20210407002322697.png) 
+- [ ] We can see there's is  116 commands are completed to add everything on the screen
+
+## What can we do?
+
+From observation, we can see that every objects are added to the scene one by one. We could merge objects in our scene before exporting from Blender. This will be performance increment in this project because we have only one texture and and one large geometry mesh.
+
+## Blender part for optimization
+
+1. ### Select All objects in scene except lights, emissions, camera
+
+2. ### Transfer them into separate collection could name it as "merged"
+
+3. ### Deactivate all objects in other collections other than MERGED   
+
+4. ### Select All objects in MERGED collection scene, remember this collection did not have any lights, camera, or emissions
+
+5. ### Go to 'object mode' and press 'A' twice that should select all objects ![image-20210407003246807](C:\Users\M A Islam\AppData\Roaming\Typora\typora-user-images\image-20210407003246807.png)
+
+6. ### Press "ctrl+J" which will join all objects to one mesh but this action will keep individual mesh names.
+
+7. ### At this stage we can export merged scene and put in the /models/ folder and everything should work just fine. 
+
+8. ### but Since we have only one mesh we could change the traverse function to a single line of code: 
+
+   ```javascript
+   const mergedMesh = gltf.scene.children.find(child) => child.name === "merged"
+   
+   mergedMesh.material = bakedMaterial
+   ```
+
+   ### Because we have used "merged" as named for export for joined objects. 
+
+## Test optimization
+
+1. ### Now if we test our results we will see ![image-20210407004125378](C:\Users\M A Islam\AppData\Roaming\Typora\typora-user-images\image-20210407004125378.png)
+
+2. ### It took only 19 commands to load the scene. TADA!! huge improvement. 
+
 
 
 # SASS rules walk through
