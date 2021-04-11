@@ -35,9 +35,11 @@ const camera = new THREE.PerspectiveCamera(
     1000
 )
 // NOTE fov calculation in redme.md we dont need fov calc in every project
-camera.position.set(1, 3, 5)
-// const z = camera.position.z
-// camera.fov = 2 * Math.atan((height / 2) / z) * (180 / Math.PI)
+// if we cal fov here, we must doit again in resize() finction
+const z = 5
+camera.position.z = z
+camera.position.set(0, 3, z)
+camera.fov = 2 * Math.atan((height / 2) / z) * (180 / Math.PI)
 camera.lookAt(scene)
 scene.add(camera)
 
@@ -86,7 +88,12 @@ render();
 // ANCHOR func resize function and Event
 window.addEventListener('resize', () => {
     renderer.setSize(window.innerWidth, window.innerHeight)
-    camera.aspect = window.innerWidth / window.innerHeight
+    camera.aspect = (window.innerWidth / window.innerHeight)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    // NOTE we Must clculate camera fov in both places
+    z = camera.position.z
+    camera.fov = 2 * Math.atan((window.innerHeight / 2) / z) * (180 / Math.PI)
     camera.updateProjectionMatrix()
+
+
 })
