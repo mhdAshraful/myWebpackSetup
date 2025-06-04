@@ -1,0 +1,9 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/" # Change if your package.json is in a subfolder
+    schedule:
+      interval: "weekly" # Options: daily, weekly, monthly
+    commit-message:
+      prefix: "deps"
+    open-pull-requests-limit: 5
